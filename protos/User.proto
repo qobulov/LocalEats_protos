@@ -11,6 +11,7 @@ service AuthService {
   rpc Logout(LogoutRequest) returns (Status);
   rpc GetProfile(UserId) returns (GetProfileResponse);
   rpc UpdateProfile(UpdateProfileRequest) returns (Status);
+  rpc DeleteProfile(UserId) returns (Status);
 }
 
 message User {
