@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "genproto/proto";
+option go_package = "genproto/users";
 
 service AuthService {
   rpc Register(RegisterRequest) returns (Status);
@@ -12,6 +12,13 @@ service AuthService {
   rpc GetProfile(UserId) returns (GetProfileResponse);
   rpc UpdateProfile(UpdateProfileRequest) returns (Status);
   rpc DeleteProfile(UserId) returns (Status);
+  
+  rpc CreateKitchen(CreateKitchenRequest) returns (Status);
+  rpc UpdateKitchen(UpdateKitchenRequest) returns (Status);
+  rpc GetKitchenByID(GetKitchenByIDRequest) returns (GetKitchenByIDResponse);
+  rpc GetKitchens(GetKitchensRequest) returns (GetKitchensResponse);
+  rpc DeleteKitchen(GetKitchenByIDRequest) returns (Status);
+  rpc SearchKitchens(SearchKitchensRequest) returns (SearchKitchensResponse);
 }
 
 message User {
@@ -38,12 +45,7 @@ message RegisterRequest {
   string password = 3;
   string full_name = 4;
   string user_type = 5;
-  string address = 6;
-  string phone_number = 7;
-  string bio = 8;
-  string specialties = 9;
-  string is_verified = 10;
-  int32 years_of_experience = 11;
+  string phone_number = 6;
 }
 
 message RegisterResponse {
@@ -97,8 +99,95 @@ message UpdateProfileRequest {
   string address = 6;
   string full_name = 7;
   string user_type = 8;
+  string bio = 9;
+  string specialties = 10;
+  int32 years_of_experience = 11;
+  bool is_verified = 12;
 }
 
 message Status {
   bool Status = 1;
+}
+
+// Oshxona modeli
+message Kitchen {
+  string id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  string cuisine_type = 5;
+  string address = 6;
+  string phone_number = 7;
+  float rating = 8;
+  int32 total_orders = 9;
+  string created_at = 10;
+  string updated_at = 11;
+}
+
+// Oshxona qo'shish so'rovi va javobi
+message CreateKitchenRequest {
+  string name = 1;
+  string description = 2;
+  string cuisine_type = 3;
+  string address = 4;
+  string phone_number = 5;
+}
+
+message CreateKitchenResponse {
+  Kitchen kitchen = 1;
+}
+
+// Oshxona profilini tahrirlash so'rovi va javobi
+message UpdateKitchenRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string cuisine_type = 4;
+  string address = 5;
+  string phone_number = 6;
+}
+
+message UpdateKitchenResponse {
+  Kitchen kitchen = 1;
+}
+
+// Oshxona profilini ko'rish so'rovi va javobi
+message GetKitchenByIDRequest {
+  string id = 1;
+}
+
+message GetKitchenByIDResponse {
+  Kitchen kitchen = 1;
+}
+
+// Oshxonalar ro'yxatini olish so'rovi va javobi
+message GetKitchensRequest {
+  string name = 1;
+  string cuisine_type = 2;
+  float rating = 3;
+  int32 offset = 4;
+  int32 limit =  5;
+}
+
+message GetKitchensResponse {
+  repeated Kitchen kitchens = 1;
+  int32 total = 2;
+  int32 offset = 3;
+  int32 limit = 4;
+}
+
+// Oshxonalarni qidirish so'rovi va javobi
+message SearchKitchensRequest {
+  string name = 1;
+  string cuisine_type = 2;
+  float rating = 3;
+  int32 offset = 4;
+  int32 limit = 5;
+}
+
+message SearchKitchensResponse {
+  repeated Kitchen kitchens = 1;
+  int32 total = 2;
+  int32 offset = 3;
+  int32 limit = 4;
 }
